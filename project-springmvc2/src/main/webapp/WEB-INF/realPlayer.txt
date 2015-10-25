@@ -1,0 +1,213 @@
+嵌入式Web视频点播系统实现方法  
+ 
+2002-09-19· · ··编程先锋
+
+ 
+1 2  下一页
+
+　　近年来，视频点播VOD（Video on Demand）的名字在媒体上出现得越来越多。VOD技术使人们可以根据自己的兴趣，不用借助录像机、影碟机、有线电视而在电脑或电视上自由地点播节目库中的视频节目和信息，是可以对视频节目内容进行自由选择的交互式系统。 
+
+　　VOD的本质是信息的使用者根据自己的需求主动获得多媒体信息，它区别于信息发布的最大不同:一是主动性、二是选择性。从某种意义上说这是信息的接受者根据自身需要进行自我完善和自我发展的方式，这种方式在当今的信息社会中将越来越符合信息资源消费者的深层需要，可以说VOD是信息获取的未来主流方式在多媒体视音频方面的表现。VOD的概念将会在信息获取的领域快速扩展,具有无限广阔的发展前景。 
+
+　　【背景】 
+
+　　笔者所在的单位建设有一个内部网站，为了进一步提高网络的可用性，完善网站的功能，决定在网络上提供视频点播功能。经过一段时间的摸索和比较，笔者最后选择了RealSystem公司的RealPlayer作为视频文件的播放工具，主要基于以下几点考虑： 
+
+　　1、 RealPlayer 支持当今绝大多数的音视频流媒体格式，包括当前流行的MP3等音频媒质； 
+
+　　2、 RealPlayer 默认的.rm格式在保证播放质量的同时，文件压缩比高，使其更利于网络传输； 
+
+　　3、 RealPlayer在Internet上拥有广泛的用户群和服务商支持。 
+
+　　可供选择的还有Microsoft的MediaPlayer、APPLE 的QuickTime等。具体请参看“搜新网”评测文章：《三大主流流媒体技术对比》（http://www.souxin.com/stream/txt/3_stream_comp/www.souxin.com.htm） 
+
+　　【播放方式的选择】 
+
+　　一般而言，安装好RealPlayer之后，有两种方式可供选择来连接视频文件。一种是直接在Web页面上提供视频文件的URL地址，当用户点击链接时，RealPlayer自动识别并实时连接进行播放；第二种方法是通过ActiveX控件方式在Web页面中嵌入RealPlayer对象，并通过DHTML为内嵌对象动态指定视频流URL，从而为视频播放提供了一个统一的友好界面。 
+
+　　前一种方法对于设计者来说相对比较简单，只需要提供视频文件的播放路径。RealPlayer的熟练用户，还可以通过自定义RealPlayer的播放方式、下载视觉插件、添加到收藏夹等方式进行视频管理。但这种方式也存在以下几点缺陷： 
+
+　　1、对于含有中文路径和中文名的视频文件，浏览器并不能很好支持，常常出现找不到文件等错误信息。 
+
+　　2、需要系统进行文件关联，如果文件关联出错，浏览器将无所适从。 
+
+　　3、对终端用户来说，往往希望看到统一的播放界面，而不是弹出式播放。 
+
+　　通过Web嵌入式视频流管理，可以把用户端的操作请求减少到最小（用户只需简单的安装RealPlayer播放器）。如果再辅以精心的美工设计，还可以按照设计者的意愿定制出精美大方的播放界面。 
+
+嵌入式Web视频点播系统实现方法  
+ 
+2002-09-19· · ··编程先锋
+
+ 
+上一页  1 2  
+
+
+　　【基本概念】 
+
+　　在进行设计之前，我们先来了解一些相关的基本概念。 
+
+　　1、＜object＞、＜embed＞标签 
+
+　　＜object＞是Microsoft在IE4.0之后推出的，用来替代＜embed＞标签的对象定义标签(IE仍然支持＜embed＞)，通过classid属性定义相应的对象类型。＜embed＞标签是Netscape浏览器支持的对象定义标签。如果开发者需要同时获得IE和NetScape两种浏览器用户的支持，最好使用＜embed＞标签。 
+
+　　2、定义ram文件 
+
+　　ram格式文件同rm文件一样，也是RealPlayer所支持的视频文件压缩格式，所不同的是ram文件可以仅简单的包括视频文件的URL地址。也就是说，ram文件可以为简单的文本格式，每一行定义一个视频文件的URL地址。 
+
+　　笔者在测试时发现，嵌入式RealPlayer在播放视频文件时，一般采用把视频文件整个下载到本地然后进行播放。这对于较大的视频文件来说，速度让人难以忍受。解决这个问题的方法，一是把视频文件简单的分割成大小适中的小文件分段播放（由于 REAL 公司对 RM 格式的实行“封闭管理”，所以 RM 到目前为止还不能像 MPEG 等视频文件一样用视频软件自由的编辑）；另外一种就是采用ram文件。RealPlayer简单的下载文本格式的ram文件，然后取出其中的真实地址，然后自动连接到网络进行实时的点对点播放。其缺点是增加了服务器负担。 
+
+　　类似的，Microsoft Media Player采用asx格式来定义asf文件。 
+
+　　3、DHTML 
+
+　　DHTML是Dynamic HTML的缩写，DHTML通过传统的HTML语言，利用CSS（Cascading Style Sheets，即样式表），并依靠JavaScript使一向静止不变的页面得以“动”起来。 Netscape 4.0和IE 4.0/5.0版本支持DHTML，DHTML是一种完全“客户端”技术，直接通过WEB页面实现页面与用户之间的交互性。DHTML的优秀之处在于增强了Web页面的功能，在Web页面直接建立动画、游戏和应用软件等等，提供了浏览站点的全新方式，与Java、Flash等技术不同的是，用DHTML编制的页面不需要插件的支持就能完整的实现。 
+
+　　【设计过程】 
+
+　　下面笔者以IE5.0为例，说明一个嵌入式WEB视频点播系统的实现方法，其中用到了部分PHP和JavaScript技术，有疑惑的读者请参考相关资料。 
+
+　　一、插入RealPlayer ActiveX对象（如果要进行测试，需要先安装RealPlayer播放器） 
+
+　　假定以下代码包含在video.php文档中（该文件将在主页面中通过＜iframe＞进行链接）。 ＜object width="320" height="250" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"＞ 
+
+＜param name="CONTROLS" value="ImageWindow"＞ 
+
+＜param name="CONSOLE" value="Video"＞ 
+
+＜param name="CENTER" value="TRUE"＞ 
+
+＜param name="MAINTAINSPECT" value="TRUE"＞ 
+
+＜/object＞ //定义播放界面 
+
+＜object width="320" height="30" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"＞ 
+
+＜param name="CONTROLS" value="StatusBar"＞ 
+
+＜param name="CONSOLE" value="Video"＞ 
+
+＜/object＞ //定义状态栏 
+
+＜object width="320" height="30" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"＞ 
+
+＜param name="CONTROLS" value="ControlPanel"＞ 
+
+＜param name="CONSOLE" value="Video"＞ 
+
+＜param name="SRC" value="＜?php echo getsrc(); ?＞"＞ 
+
+＜param name="AUTOSTART" value="TRUE"＞ 
+
+＜param name="PREFETCH" value="0"＞ 
+
+＜param name="LOOP" value="0"＞ 
+
+＜param name="NUMLOOP" value="0"＞ 
+
+＜/object＞ //定义控制面板
+
+
+
+其中，CONTROLS参数用来指定播放器的控件外观，可以用多个控件进行组合，并通过CONSOLE参数进行关联。 
+
+　　有关param参数，读者可以参阅RealPlayer官方网站http://service.real.com/help/library/guides/production/htmfiles/control.htm。 
+
+　　这里的SRC参数尤为重要，用来指定视频流文件的URL地址。这里笔者使用PHP代码的方法动态的指定SRC，读者也可以使用其它如ASP，或完全通过 JavaScript 实现。 
+
+　　二、使用DHTML动态控制RealPlayer控件的播放 
+
+　　小技巧：＜IFRAME＞的妙用。由于为RealPlayer控件指定新的SRC需要刷新页面，使用＜IFRAME＞可以把RealPlayer控件嵌入到单独的页面中，这样，动态刷新就是在＜IFRAME＞内进行，不会影响用户观看页面其它内容。 
+
+　　以下代码包含在主页面中： 
+
+＜IFRAME id="iVideo" SRC="video.php" Width=500 Height=345 frameborder=0 SCROLLING="no"＞ 
+
+＜/IFRAME＞，其中，video.php文件用力显示RealPlayer控件。  
+
+　　下面我们加入简单的JavaScript 代码用来控制视频的播放。 
+
+＜script language="JavaScript"＞ 
+
+function play(filename){ 
+
+top.document.all("iVideo").src = "video.php?src="+filename; 
+
+} // iVideo 是刚刚定义的IFRAME 的标识符 
+
+＜/script＞  
+
+　　我们可以使用javascript控制RealPlayer插件更复杂的功能，如提取视频的长宽、测试用户的网络速率、自定义播放事件等等。关于RealPlayer ActiveX开发的具体细节，请参阅RealPlayer官方网站http://service.real.com/help/library/guides/extend/embed.htm。 
+
+　　我们假设有一个视频文件，其URL为http://YourURL/filename.ram，那么我们就可以这样定义： 
+
+　　＜a href="JavaScript:play('http://YourURL/filename.ram')"＞文件1＜/a＞，如果文件是在本地，URL也可以为相对路径。 
+
+　　三、检测用户是否安装RealPlayer播放器 
+
+　　在页面的＜head＞＜/head＞部分加入以下JavaScript代码，用以检测用户是否安装RealPlayer播放器： 
+
+＜SCRIPT LANGUAGE=JavaScript＞ 
+
+＜!-- 
+
+var RealMode=0; 
+
+var RealPlayer5=0; 
+
+var RealPlayer4=0; 
+
+var RealPlayerG2=0; 
+
+if (navigator.userAgent.indexOf("MSIE")＜ 0 ){ 
+
+numPlugins = navigator.plugins.length; 
+
+for (i = 0; i ＜ numPlugins; i++){ 
+
+plugin = navigator.plugins[i]; 
+
+if (plugin.name.substring(0,10)=="RealPlayer"){ 
+
+RealMode=1; 
+
+} 
+
+} 
+
+} 
+
+// 以下代码通过VBScript的CreateObject()函数动态的创建RealPlayer对象 
+
+document.write('＜SCRIPT LANGUAGE=VBScript\＞ \n'); 
+
+document.write('on error resume next \n'); 
+
+document.write('RealPlayerG2 = (NOT IsNull(CreateObject("rmocx.RealPlayer G2 Control")))\n'); 
+
+document.write('RealPlayer5 = (NOT IsNull(CreateObject("RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)")))\n'); 
+
+document.write('RealPlayer4 = (NOT IsNull(CreateObject("RealVideo.RealVideo(tm) ActiveX Control (32-bit)")))\n'); 
+
+document.write('＜/SCRIPT\＞ \n'); 
+
+if ( RealPlayerG2 || RealPlayer5 || RealPlayer4 ){ 
+
+//可以在此处添加＜object＞对象 
+
+}else if ( RealMode ){ // NetScape浏览器用户 
+
+// 可以在此处加入＜embed＞对象 
+
+}else{ 
+
+window.location.replace("install.htm"); // 转入install.htm页面指导用户进行安装 
+
+} 
+
+--＞ 
+
+＜/Script＞  
+
+　　至此，我们已经实现了一个基于Web的视频点播的基本功能。但我们要想把功能做的更完美一些，还需要其它更复杂的考虑。如流媒体的制作、
+网页美工的设计、网络流速的考虑，以及网站视频文件的有效组织。这些话题已经超出了本文的讨论范围，请读者自行参考相关资料

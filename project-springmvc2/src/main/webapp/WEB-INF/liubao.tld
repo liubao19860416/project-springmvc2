@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>local</short-name>
+	<uri>http://www.Liubao.local.tag/</uri>
+
+	<!-- 没有使用freemarker实现 -->
+	<tag>
+		<name>pageTag</name>
+		<tag-class>com.saick.base.pager.PageTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>pageNum</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>pageSize</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>totalCount</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>parameterUrl</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>pageQueryUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<!-- 这个类型需要注意一下 -->
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	<!-- 使用freemarker实现 -->
+	<tag>
+		<name>pageTagFreemarker</name>
+		<tag-class>com.saick.base.pager.PagTagFreemarker</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<name>pageNum</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>pageSize</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>totalCount</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>parameterUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>pageQueryUrl</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+	
+	<!--普通的网页防盗链实现,<body-content>为empty表示标签中间是可以没有内容的-->
+	<tag>
+		<name>refererURL</name>
+		<tag-class>com.saick.base.tag.RefererURLTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>site</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>page</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<!-- 用户登录权限控制-使用freemarker -->
+	<tag>
+		<name>userLoginCheck</name>
+		<tag-class>com.saick.base.tag.UserLoginCheckTag</tag-class>
+		<body-content>empty</body-content>
+	</tag>
+	
+
+</taglib>
+

@@ -1,0 +1,29 @@
+package com.saick.base.controller.config;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.JsonDeserializer;
+
+public class JsonDateTimeDeserializer extends JsonDeserializer<Date> {
+
+    @Override
+    public Date deserialize(JsonParser parser, DeserializationContext context)
+            throws IOException, JsonProcessingException {
+        String dateFormat = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        try {
+            String fieldData = parser.getText();
+            return sdf.parse(fieldData);
+        } catch (Exception e) {
+            Calendar ca = Calendar.getInstance();
+            ca.set(1970, Calendar.JANUARY, 1, 0, 0, 0);
+            return ca.getTime();
+        }
+    }
+}
